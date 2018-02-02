@@ -5,7 +5,7 @@ using Spire.Events;
 
 namespace Spire.Patches.TFGame
 {
-    public class TFGameOnGameUpdatePatch : SpirePatch
+    public class TfGameOnGameUpdatePatch : SpirePatch
     {
         public static MethodInfo TargetMethod = typeof(TowerFall.TFGame).GetMethod("Update", BindingFlags.NonPublic | BindingFlags.Instance);
 

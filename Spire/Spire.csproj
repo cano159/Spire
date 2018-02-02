@@ -74,7 +74,6 @@
     <Compile Include="Patches\MainMenu\MainMenuAddOptionsButtonsPatch.cs" />
     <Compile Include="Patches\Scene\SceneOnSceneEndPatch.cs" />
     <Compile Include="Patches\Session\SessionOnGameStartPatch.cs" />
-    <Compile Include="Patches\TFGame\TFGameOnDrawPatch.cs" />
     <Compile Include="Patches\TFGame\TFGameOnGameUpdatePatch.cs" />
     <Compile Include="Logger\Logger.cs" />
     <Compile Include="Mod.cs" />
@@ -97,7 +96,7 @@
     <Compile Include="Events\EventController.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Harmony-master\Harmony\Harmony.csproj">
+    <ProjectReference Include="..\Harmony\Harmony\Harmony.csproj">
       <Project>{69aee16a-b6e7-4642-8081-3928b32455df}</Project>
       <Name>Harmony</Name>
     </ProjectReference>
