@@ -1,7 +1,7 @@
 # Spire
 A work-in-progress modding framework for TowerFall: Ascension. 
 
-##Installation. 
+## Installation. 
 
 1. Drag and drop SpireModLoader.exe into your TowerFall Ascension directory. 
 2. Drag and drop any mods you want to use into your "Mods" folder in your TowerFall Ascension directory. 
@@ -9,7 +9,7 @@ A work-in-progress modding framework for TowerFall: Ascension.
 
 Any errors encountered while loading the game will be saved to the "loadlog.txt" file in your TowerFall Ascension directory.
 
-##Creating Mods
+## Creating Mods
 
 Currently, making a mod requires creating a class that inherits from the abstract "Mod" class in the Spire namespace.
 
@@ -25,7 +25,7 @@ public override void OnModLoad()
 }
 ```
 
-###Events
+### Events
 
 A Mod-derived class can subscribe to events in the EventsController class: 
 
