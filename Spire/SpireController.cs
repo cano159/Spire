@@ -7,9 +7,7 @@ using System.Reflection;
 using Harmony;
 using Spire.Atlas;
 using Spire.Command;
-using Spire.Events;
 using Spire.Patches;
-using Spire.Settings;
 using TowerFall;
 using static Spire.Logger.Logger;
 
@@ -31,8 +29,8 @@ namespace Spire
         internal static HarmonyInstance HarmonyInst { get; private set; }
 
         public ObjectRegistrar<ArcherData> ArcherDataRegistrar = new ObjectRegistrar<ArcherData>();
-        public ObjectRegistrar<AtlasAdditions> AtlasAdditionsRegistrar = new ObjectRegistrar<AtlasAdditions>();
         public ObjectRegistrar<ArcherPortrait> ArcherPortraitRegistrar = new ObjectRegistrar<ArcherPortrait>();
+        public ObjectRegistrar<AtlasAddition> AtlasAdditionRegistrar = new ObjectRegistrar<AtlasAddition>();
         public ObjectRegistrar<ConsoleCommand> ConsoleCommandsRegistrar = new ObjectRegistrar<ConsoleCommand>();
         public ObjectRegistrar<Level> LevelRegistrar = new ObjectRegistrar<Level>();
         public ObjectRegistrar<OptionsButton> OptionsButtonRegistrar = new ObjectRegistrar<OptionsButton>();
@@ -75,7 +73,8 @@ namespace Spire
 
         private static void ApplyPersistentGamePatches()
         {
-            if (_patches != null) return;
+            if (_patches != null)
+                return;
 
             IEnumerable<SpirePatch> discoveredPatches =
                 ExtensionMethods.GetEnumerableOfType<SpirePatch>(Assembly.GetExecutingAssembly());
@@ -121,7 +120,7 @@ namespace Spire
                     {
                         var mod = (Mod)Activator.CreateInstance(modType, false);
 
-                        LogMessageOnLoad($"Loaded {mod.ModName} from {assembly.FullName}");
+                        LogMessageOnLoad($"Loaded {mod.ModName} from {assembly.Location}");
 
                         _loadedMods.TryAdd(_loadedMods.Count, mod);
 
@@ -148,11 +147,20 @@ namespace Spire
             _isInitializationInProgress = false;
         }
 
-        internal void DisableMod(Mod mod) => ChangeModState(mod, false);
+        internal void DisableMod(Mod mod)
+        {
+            ChangeModState(mod, false);
+        }
 
-        internal void EnableMod(Mod mod) => ChangeModState(mod, true);
+        internal void EnableMod(Mod mod)
+        {
+            ChangeModState(mod, true);
+        }
 
-        private static void ChangeModState(Mod mod, bool isEnable) => mod.IsActive = isEnable;
+        private static void ChangeModState(Mod mod, bool isEnable)
+        {
+            mod.IsActive = isEnable;
+        }
 
         internal bool ShouldHarmonyAutoPatch(Assembly assembly, string modId)
         {

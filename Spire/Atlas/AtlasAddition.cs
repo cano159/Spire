@@ -7,7 +7,7 @@ using Monocle;
 
 namespace Spire.Atlas
 {
-    public class AtlasAdditions
+    public class AtlasAddition
     {
         public Subtexture this[string name] => SubTextures[name];
 
@@ -18,7 +18,7 @@ namespace Spire.Atlas
 
         public string XmlPath { get; }
 
-        public AtlasAdditions(AtlasType type)
+        public AtlasAddition(AtlasType type)
         {
             switch (type)
             {

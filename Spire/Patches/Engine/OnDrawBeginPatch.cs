@@ -6,7 +6,7 @@ using Spire.Events;
 
 namespace Spire.Patches.Engine
 {
-    public class OnDrawBeginPatch : SpirePatch
+    internal class OnDrawBeginPatch : SpirePatch
     {
         public static readonly MethodInfo TargetMethod =
             typeof(Monocle.Engine).GetMethod("Draw", BindingFlags.NonPublic | BindingFlags.Instance);

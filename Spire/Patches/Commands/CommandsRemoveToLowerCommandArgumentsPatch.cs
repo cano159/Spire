@@ -5,7 +5,7 @@ using Harmony;
 
 namespace Spire.Patches.Commands
 {
-    public class CommandsRemoveToLowerCommandArgumentsPatch : SpirePatch
+    internal class CommandsRemoveToLowerCommandArgumentsPatch : SpirePatch
     {
         public static readonly MethodInfo EnterCommandMethod =
             typeof(Monocle.Commands).GetMethod("EnterCommand", BindingFlags.Instance | BindingFlags.NonPublic);

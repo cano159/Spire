@@ -4,9 +4,10 @@ using Spire.Events;
 
 namespace Spire.Patches.Scene
 {
-    public class SceneOnEndPatch : SpirePatch
+    internal class SceneOnEndPatch : SpirePatch
     {
-        public static MethodInfo TargetMethod = typeof(Monocle.Scene).GetMethod("End", BindingFlags.Public | BindingFlags.Instance);
+        public static MethodInfo TargetMethod =
+            typeof(Monocle.Scene).GetMethod("End", BindingFlags.Public | BindingFlags.Instance);
 
         public static void Postfix(Monocle.Scene __instance)
         {

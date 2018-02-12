@@ -7,7 +7,9 @@ namespace Spire
     public class ObjectRegistrar<T>
     {
         public IEnumerable<T> this[Mod mod] => RegisteredObjects[mod];
-        public readonly ConcurrentDictionary<Mod, ConcurrentBag<T>> RegisteredObjects = new ConcurrentDictionary<Mod, ConcurrentBag<T>>();
+
+        public readonly ConcurrentDictionary<Mod, ConcurrentBag<T>> RegisteredObjects =
+            new ConcurrentDictionary<Mod, ConcurrentBag<T>>();
 
         public Dictionary<Mod, ConcurrentBag<T>> FromActive()
         {

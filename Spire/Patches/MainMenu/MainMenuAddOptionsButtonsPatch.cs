@@ -1,21 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Reflection;
 using Harmony;
-using Spire.Button;
-using Spire.Command;
+using TowerFall;
 using static Spire.SpireController;
 
 namespace Spire.Patches.MainMenu
 {
-    public class MainMenuAddOptionsButtonsPatch : SpirePatch
+    internal class MainMenuAddOptionsButtonsPatch : SpirePatch
     {
-        public static MethodInfo TargetMethod = typeof(TowerFall.MainMenu).GetMethod("InitOptions", BindingFlags.NonPublic | BindingFlags.Instance);
+        public static MethodInfo TargetMethod =
+            typeof(TowerFall.MainMenu).GetMethod("InitOptions", BindingFlags.NonPublic | BindingFlags.Instance);
 
-        public static void Prefix(TowerFall.MainMenu __instance, ref List<TowerFall.OptionsButton> buttons)
+        public static void Prefix(TowerFall.MainMenu __instance, ref List<OptionsButton> buttons)
         {
             var commands = Instance.OptionsButtonRegistrar.FromActive().Values;
 
-            foreach (var commandsList in commands)
+            foreach (ConcurrentBag<OptionsButton> commandsList in commands)
                 buttons.AddRange(commandsList);
         }
 

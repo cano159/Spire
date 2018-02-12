@@ -51,13 +51,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Atlas\AtlasAdditions.cs" />
+    <Compile Include="Atlas\AtlasAddition.cs" />
     <Compile Include="Atlas\AtlasExtensionMethods.cs" />
     <Compile Include="Atlas\AtlasType.cs" />
     <Compile Include="Button\OptionsButton.cs" />
     <Compile Include="Button\OptionsButtonType.cs" />
     <Compile Include="Command\ConsoleCommand.cs" />
-    <Compile Include="Compatibility\Patch.cs" />
     <Compile Include="Events\GameUpdatedEventArgs.cs" />
     <Compile Include="Events\SessionStartEventArgs.cs" />
     <Compile Include="Events\EntityRemovedEventArgs.cs" />
@@ -72,7 +71,7 @@
     <Compile Include="Patches\Commands\CommandsRemoveToLowerCommandArgumentsPatch.cs" />
     <Compile Include="Patches\Engine\OnDrawBeginPatch.cs" />
     <Compile Include="Patches\MainMenu\MainMenuAddOptionsButtonsPatch.cs" />
-    <Compile Include="Patches\Scene\SceneOnSceneEndPatch.cs" />
+    <Compile Include="Patches\Scene\SceneOnEndPatch.cs" />
     <Compile Include="Patches\Session\SessionOnGameStartPatch.cs" />
     <Compile Include="Patches\TFGame\TFGameOnGameUpdatePatch.cs" />
     <Compile Include="Logger\Logger.cs" />

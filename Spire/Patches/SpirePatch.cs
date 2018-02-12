@@ -5,7 +5,7 @@ using Harmony;
 
 namespace Spire.Patches
 {
-    public abstract class SpirePatch
+    internal abstract class SpirePatch
     {
         public abstract void Patch(HarmonyInstance harmony);
 

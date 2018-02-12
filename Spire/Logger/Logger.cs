@@ -35,9 +35,9 @@ namespace Spire.Logger
 
         private static void LogException(Exception except, bool isOnLoad)
         {
-            TFGame.WriteLineToLoadLog(CreateMessageString(except.Message, isOnLoad));
+            TFGame.WriteLineToLoadLog(CreateMessageString(except.Message, true));
             TFGame.Log(except, isOnLoad);
-            Console.WriteLine(CreateMessageString(except.Message, isOnLoad));
+            Console.WriteLine(CreateMessageString(except.Message, true));
         }
     }
 }

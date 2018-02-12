@@ -4,7 +4,7 @@ using static Spire.Events.EventController;
 
 namespace Spire.Patches.TFGame
 {
-    public class TfGameInitializationPatch : SpirePatch
+    internal class TfGameInitializationPatch : SpirePatch
     {
         public static MethodInfo TargetMethod = typeof(TowerFall.TFGame).GetMethod("Initialize", BindingFlags.NonPublic | BindingFlags.Instance);
 

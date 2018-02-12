@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using Harmony;
 using Microsoft.Xna.Framework;
-using Monocle;
 using Spire.Events;
 using static Harmony.HarmonyInstance;
 
@@ -18,7 +16,9 @@ namespace Spire
 
         public abstract string ModName { get; }
 
-        public virtual bool HasAtlasAddition => true;
+        public abstract string ModAuthor { get; }
+
+        public abstract string ModDescription { get; }
 
         public bool IsActive { get; internal set; }
 

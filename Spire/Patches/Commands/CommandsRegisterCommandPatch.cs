@@ -8,7 +8,7 @@ using static Spire.SpireController;
 
 namespace Spire.Patches.Commands
 {
-    public class CommandRegisterConsoleCommandsPatch : SpirePatch
+    internal class CommandRegisterConsoleCommandsPatch : SpirePatch
     {
         public static ConstructorInfo TargetMethod = typeof(Monocle.Commands).GetConstructors().First();
 

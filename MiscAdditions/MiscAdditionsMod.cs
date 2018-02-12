@@ -1,66 +1,86 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Reflection;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using MiscAdditions.Commands;
 using Spire;
 using static MiscAdditions.ExtensionMethods;
 using static Monocle.Engine;
+using Screen = Monocle.Screen;
 
 namespace MiscAdditions
 {
     public class MiscAdditionsMod : Mod
     {
         public override string ModName => "MiscAdditionsMod";
+        public override string ModAuthor => "ngrst183";
 
-        internal static bool IsDebugModeEnabled { get; set; }
+        public override string ModDescription =>
+            "Adds random fixes and tweaks to the base game, including window resizing, additional console commands, and less memory usage.";
 
         private TimeSpan _counterElapsed = TimeSpan.Zero;
         private int _fpsCounter;
+
+        private readonly MethodInfo _setWindowSizeMethod =
+            typeof(Screen).GetMethod("SetWindowSize", BindingFlags.NonPublic | BindingFlags.Instance);
 
         private readonly Form _window = Control.FromHandle(Instance.Window.Handle).FindForm();
 
         public override void OnModLoad()
         {
             SpireController.Instance.ConsoleCommandsRegistrar.Add(this, new UnlockEverythingCommand());
-            SpireController.Instance.ConsoleCommandsRegistrar.Add(this, new DebugRenderConsoleCommand());
             SpireController.Instance.ConsoleCommandsRegistrar.Add(this, new MusicConsoleCommand());
 
             Instance.Window.AllowUserResizing = true;
-            Instance.Window.ClientSizeChanged += Window_ClientSizeChanged;
+            _window.SizeChanged += _window_SizeChanged;
         }
 
-        private void Window_ClientSizeChanged(object sender, EventArgs e)
+        private void _window_SizeChanged(object sender, EventArgs e)
         {
-            Instance.Window.ClientSizeChanged -= Window_ClientSizeChanged;
+            if (_window.Width <= 0 || _window.Height <= 0 || Instance.Screen.IsFullscreen) return;
 
-            int width = Instance.Window.ClientBounds.Width;
-            int height = Instance.Window.ClientBounds.Height;
+            _window.SizeChanged -= _window_SizeChanged;
 
-            if (width <= 0 || height <= 0) return;
+            Console.WriteLine(
+                $"Viewport Size: {Instance.GraphicsDevice.Viewport}, Window client bounds size : {Instance.Window.ClientBounds}");
 
-            Instance.Graphics.PreferredBackBufferHeight = height;
-            Instance.Graphics.PreferredBackBufferWidth = width;
+            int boundsWidth = Instance.Window.ClientBounds.Width;
+            int boundsHeight = Instance.Window.ClientBounds.Height;
+
+            if (boundsHeight - Instance.GraphicsDevice.Viewport.Height < 0 || boundsWidth - Instance.GraphicsDevice.Viewport.Width < 0)
+            {
+                return;
+            }
+
+            _setWindowSizeMethod.Invoke(Instance.Screen, new object[] { boundsWidth, boundsHeight });
+           
+            Instance.Graphics.PreferredBackBufferWidth = boundsWidth;
+            Instance.Graphics.PreferredBackBufferHeight = boundsHeight;
+
+            //Instance.Screen.DrawRect.Width = boundsWidth;
+            //Instance.Screen.DrawRect.Height = boundsHeight;
+
             Instance.Graphics.ApplyChanges();
 
-            Instance.Window.ClientSizeChanged += Window_ClientSizeChanged;
+            _window.SizeChanged += _window_SizeChanged;
         }
 
         public override void Update(GameTime time)
         {
+            if (!_window.ControlBox)
+                _window.ControlBox = true;
+
             _fpsCounter++;
             _counterElapsed += time.ElapsedGameTime;
 
-            if (_counterElapsed >= TimeSpan.FromSeconds(1))
-            {
-                Instance.Window.Title =
-                    $"TowerFall Ascension - {_fpsCounter} FPS - {SizeSuffix(Process.GetCurrentProcess().WorkingSet64)}";
-                _fpsCounter = 0;
-                _counterElapsed -= TimeSpan.FromSeconds(1);
-            }
+            if (_counterElapsed < TimeSpan.FromSeconds(1)) return;
 
-            if (_window.ControlBox) return;
-            _window.ControlBox = true;
+            Instance.Window.Title =
+                $"TowerFall Ascension - {_fpsCounter} FPS - {SizeSuffix(Process.GetCurrentProcess().WorkingSet64)}";
+
+            _fpsCounter = 0;
+            _counterElapsed -= TimeSpan.FromSeconds(1);
         }
     }
 }

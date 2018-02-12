@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 namespace Spire
 {
@@ -12,7 +11,7 @@ namespace Spire
             return typeof(T)
                 .Assembly.GetTypes()
                 .Where(t => t.IsSubclassOf(typeof(T)) && !t.IsAbstract)
-                .Select(t => (T)Activator.CreateInstance(t));
+                .Select(t => (T) Activator.CreateInstance(t));
         }
 
         public static IEnumerable<Type> GetAllObjectsWithAttribute<T>()
@@ -22,6 +21,9 @@ namespace Spire
                 .Where(t => t.IsDefined(typeof(T), false));
         }
 
-        public static string BoolToString(bool value) => !value ? "OFF" : "ON";
+        public static string BoolToString(bool value)
+        {
+            return !value ? "OFF" : "ON";
+        }
     }
 }

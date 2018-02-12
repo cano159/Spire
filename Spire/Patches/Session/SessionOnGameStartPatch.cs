@@ -4,7 +4,7 @@ using Spire.Events;
 
 namespace Spire.Patches.Session
 {
-    public class SessionOnGameStartPatch : SpirePatch
+    internal class SessionOnGameStartPatch : SpirePatch
     {
         public static readonly MethodInfo TargetMethod = typeof(TowerFall.Session).GetMethod("StartGame", BindingFlags.Public | BindingFlags.Instance);
 

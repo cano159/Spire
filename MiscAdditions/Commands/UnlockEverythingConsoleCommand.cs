@@ -9,9 +9,7 @@ namespace MiscAdditions.Commands
     /// </summary>
     public class UnlockEverythingCommand : ConsoleCommand
     {
-        public UnlockEverythingCommand() : base("unlock_everything")
-        {
-        }
+        public UnlockEverythingCommand() : base("unlock_everything") { }
 
         public override void Invoke(string[] args)
         {

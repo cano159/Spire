@@ -13,7 +13,7 @@ namespace MiscAdditions.Commands
 {
     public class MusicConsoleCommand : ConsoleCommand
     {
-        private string PreviousSong;
+        private string _previousSong;
 
         public MusicConsoleCommand() : base("music")
         {
@@ -46,16 +46,14 @@ namespace MiscAdditions.Commands
                     {
                         case "play":
                             if (args.Length >= 1)
-                            {
                                 PlaySong(args[1]);
-                            }
                             break;
                         case "stop":
-                            PreviousSong = Music.CurrentSong;
+                            _previousSong = Music.CurrentSong;
                             Music.Stop();
                             break;
                         case "start":
-                            Music.Play(PreviousSong);
+                            Music.Play(_previousSong);
                             break;
                     }
                 }

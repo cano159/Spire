@@ -1,16 +1,14 @@
-﻿using System;
+﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using Harmony;
 using Spire.Atlas;
-using Spire.Command;
 using static Spire.SpireController;
 
 namespace Spire.Patches.Atlas
 {
-    public class SpriteDataAdditionsPatch : SpirePatch
+    internal class SpriteDataAdditionsPatch : SpirePatch
     {
         public static ConstructorInfo TargetMethod = typeof(Monocle.Atlas).GetConstructors().First();
 
@@ -18,9 +16,9 @@ namespace Spire.Patches.Atlas
         {
             string atlasType = __instance.XmlPath;
 
-            var additions = Instance.AtlasAdditionsRegistrar.FromActive().Values;
+            var additions = Instance.AtlasAdditionRegistrar.FromActive().Values;
 
-            foreach (var additionsList in additions)
+            foreach (ConcurrentBag<AtlasAddition> additionsList in additions)
                 __instance.AddRange(additionsList.Where(x => x.XmlPath == atlasType));
         }
 
