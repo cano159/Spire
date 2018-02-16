@@ -7,6 +7,7 @@ using System.Reflection;
 using Harmony;
 using Spire.Atlas;
 using Spire.Command;
+using Spire.Events;
 using Spire.Patches;
 using TowerFall;
 using static Spire.Logger.Logger;
@@ -44,6 +45,7 @@ namespace Spire
         {
             try
             {
+                EventController.Instance.OnGameLoaded += Instance_OnGameLoaded;
                 ApplyHarmonyPatches();
                 LoadAndInitializeMods();
                 ApplyPersistentGamePatches();
@@ -53,6 +55,11 @@ namespace Spire
                 LogExceptionOnLoad(e);
                 throw;
             }
+        }
+
+        private void Instance_OnGameLoaded(object sender, EventArgs e)
+        {
+            _isInitializationInProgress = false;
         }
 
         private void ApplyHarmonyPatches()
@@ -106,7 +113,6 @@ namespace Spire
         private void LoadAndInitializeMods()
         {
             foreach (string currentFile in EnumerateModFiles())
-            {
                 try
                 {
                     Assembly assembly = Assembly.LoadFrom(currentFile);
@@ -118,7 +124,7 @@ namespace Spire
 
                     foreach (Type modType in types)
                     {
-                        var mod = (Mod)Activator.CreateInstance(modType, false);
+                        var mod = (Mod) Activator.CreateInstance(modType, false);
 
                         LogMessageOnLoad($"Loaded {mod.ModName} from {assembly.Location}");
 
@@ -134,7 +140,6 @@ namespace Spire
                 {
                     LogExceptionOnLoad(e);
                 }
-            }
         }
 
         internal void OnPreInitialize()

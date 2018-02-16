@@ -5,7 +5,7 @@ using Harmony;
 
 namespace Spire.Patches
 {
-    internal abstract class SpirePatch
+    public abstract class SpirePatch
     {
         public abstract void Patch(HarmonyInstance harmony);
 
@@ -48,7 +48,8 @@ namespace Spire.Patches
 
         public HarmonyMethod GetHarmonyMethod(string methodName)
         {
-            MethodInfo method = GetType().GetMethod(methodName, BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
+            MethodInfo method = GetType().GetMethod(methodName,
+                BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
             return new HarmonyMethod(method);
         }
 

@@ -8,9 +8,11 @@ namespace Spire.Patches.RoundLogic
 {
     internal class RoundLogicOnPlayerDeathPatch : SpirePatch
     {
-        public static MethodInfo TargetMethod = typeof(TowerFall.RoundLogic).GetMethod("OnPlayerDeath", BindingFlags.Public | BindingFlags.Instance);
+        public static MethodInfo TargetMethod =
+            typeof(TowerFall.RoundLogic).GetMethod("OnPlayerDeath", BindingFlags.Public | BindingFlags.Instance);
 
-        public static void Postfix(Player player, PlayerCorpse corpse, int playerIndex, DeathCause cause, Vector2 position, int killerIndex)
+        public static void Postfix(Player player, PlayerCorpse corpse, int playerIndex, DeathCause cause,
+            Vector2 position, int killerIndex)
         {
             EventController.Instance.PlayerDeath(player, corpse, playerIndex, cause, position, killerIndex);
         }

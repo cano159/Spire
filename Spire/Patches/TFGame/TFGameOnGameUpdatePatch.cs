@@ -7,7 +7,8 @@ namespace Spire.Patches.TFGame
 {
     internal class TfGameOnGameUpdatePatch : SpirePatch
     {
-        public static MethodInfo TargetMethod = typeof(TowerFall.TFGame).GetMethod("Update", BindingFlags.NonPublic | BindingFlags.Instance);
+        public static MethodInfo TargetMethod =
+            typeof(TowerFall.TFGame).GetMethod("Update", BindingFlags.NonPublic | BindingFlags.Instance);
 
         public static void Prefix(ref GameTime gameTime)
         {

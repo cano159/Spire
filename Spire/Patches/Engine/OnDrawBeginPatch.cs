@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
-using System.Reflection.Emit;
 using Harmony;
 using Spire.Events;
 
@@ -19,15 +18,6 @@ namespace Spire.Patches.Engine
 
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
-            /*
-            foreach (CodeInstruction instruction in instructions)
-            {
-                if (instruction.opcode == OpCodes.Callvirt && (MethodInfo) instruction.operand == PreRenderOperand)
-                    yield return new CodeInstruction(OpCodes.Call, BeginDrawMethod);
-                else
-                    yield return instruction;
-            }
-            */
             return instructions;
         }
 

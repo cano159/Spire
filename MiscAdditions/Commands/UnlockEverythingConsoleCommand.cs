@@ -5,11 +5,13 @@ namespace MiscAdditions.Commands
 {
     /// <inheritdoc />
     /// <summary>
-    /// A simple console command to unlock everything. 
+    ///     A simple console command to unlock everything.
     /// </summary>
     public class UnlockEverythingCommand : ConsoleCommand
     {
-        public UnlockEverythingCommand() : base("unlock_everything") { }
+        public UnlockEverythingCommand() : base("unlock_everything")
+        {
+        }
 
         public override void Invoke(string[] args)
         {

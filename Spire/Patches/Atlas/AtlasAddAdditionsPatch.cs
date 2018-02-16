@@ -16,7 +16,8 @@ namespace Spire.Patches.Atlas
         {
             string atlasType = __instance.XmlPath;
 
-            var additions = Instance.AtlasAdditionRegistrar.FromActive().Values;
+            Dictionary<Mod, ConcurrentBag<AtlasAddition>>.ValueCollection additions =
+                Instance.AtlasAdditionRegistrar.FromActive().Values;
 
             foreach (ConcurrentBag<AtlasAddition> additionsList in additions)
                 __instance.AddRange(additionsList.Where(x => x.XmlPath == atlasType));

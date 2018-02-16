@@ -73,6 +73,7 @@
     <Compile Include="Patches\MainMenu\MainMenuAddOptionsButtonsPatch.cs" />
     <Compile Include="Patches\Scene\SceneOnEndPatch.cs" />
     <Compile Include="Patches\Session\SessionOnGameStartPatch.cs" />
+    <Compile Include="Patches\TFGame\TFGameOnGameLoadPatch.cs" />
     <Compile Include="Patches\TFGame\TFGameOnGameUpdatePatch.cs" />
     <Compile Include="Logger\Logger.cs" />
     <Compile Include="Mod.cs" />

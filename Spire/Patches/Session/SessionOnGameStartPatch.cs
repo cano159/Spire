@@ -6,7 +6,8 @@ namespace Spire.Patches.Session
 {
     internal class SessionOnGameStartPatch : SpirePatch
     {
-        public static readonly MethodInfo TargetMethod = typeof(TowerFall.Session).GetMethod("StartGame", BindingFlags.Public | BindingFlags.Instance);
+        public static readonly MethodInfo TargetMethod =
+            typeof(TowerFall.Session).GetMethod("StartGame", BindingFlags.Public | BindingFlags.Instance);
 
         public static void Postfix(TowerFall.Session __instance)
         {

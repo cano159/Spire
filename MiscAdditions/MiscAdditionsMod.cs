@@ -13,11 +13,10 @@ namespace MiscAdditions
 {
     public class MiscAdditionsMod : Mod
     {
-        public override string ModName => "MiscAdditionsMod";
+        public override string ModName => "Misc Additions Mod";
         public override string ModAuthor => "ngrst183";
-
         public override string ModDescription =>
-            "Adds random fixes and tweaks to the base game, including window resizing, additional console commands, and less memory usage.";
+            "Adds random fixes and tweaks to the base game - including window resizing and additional console commands.";
 
         private TimeSpan _counterElapsed = TimeSpan.Zero;
         private int _fpsCounter;
@@ -31,7 +30,6 @@ namespace MiscAdditions
         {
             SpireController.Instance.ConsoleCommandsRegistrar.Add(this, new UnlockEverythingCommand());
             SpireController.Instance.ConsoleCommandsRegistrar.Add(this, new MusicConsoleCommand());
-
             Instance.Window.AllowUserResizing = true;
             _window.SizeChanged += _window_SizeChanged;
         }
@@ -48,18 +46,10 @@ namespace MiscAdditions
             int boundsWidth = Instance.Window.ClientBounds.Width;
             int boundsHeight = Instance.Window.ClientBounds.Height;
 
-            if (boundsHeight - Instance.GraphicsDevice.Viewport.Height < 0 || boundsWidth - Instance.GraphicsDevice.Viewport.Width < 0)
-            {
-                return;
-            }
+            _setWindowSizeMethod.Invoke(Instance.Screen, new object[] {boundsWidth, boundsHeight});
 
-            _setWindowSizeMethod.Invoke(Instance.Screen, new object[] { boundsWidth, boundsHeight });
-           
             Instance.Graphics.PreferredBackBufferWidth = boundsWidth;
             Instance.Graphics.PreferredBackBufferHeight = boundsHeight;
-
-            //Instance.Screen.DrawRect.Width = boundsWidth;
-            //Instance.Screen.DrawRect.Height = boundsHeight;
 
             Instance.Graphics.ApplyChanges();
 

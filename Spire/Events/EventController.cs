@@ -12,6 +12,7 @@ namespace Spire.Events
 
         public event EventHandler<EventArgs> OnDrawBegin;
         public event EventHandler<EventArgs> OnGameInitializationStart;
+        public event EventHandler<EventArgs> OnGameLoaded;
         public event EventHandler<EntityAddedEventArgs> OnEntityAddedToCurrentScene;
         public event EventHandler<EntityRemovedEventArgs> OnEntityRemovedFromCurrentScene;
         public event EventHandler<SessionStartEventArgs> OnSessionStart;
@@ -99,6 +100,11 @@ namespace Spire.Events
         internal void DrawBegin()
         {
             OnDrawBegin?.Invoke(this, new EventArgs());
+        }
+
+        internal virtual void GameLoaded()
+        {
+            OnGameLoaded?.Invoke(this, EventArgs.Empty);
         }
     }
 }

@@ -14,7 +14,8 @@ namespace Spire.Patches.MainMenu
 
         public static void Prefix(TowerFall.MainMenu __instance, ref List<OptionsButton> buttons)
         {
-            var commands = Instance.OptionsButtonRegistrar.FromActive().Values;
+            Dictionary<Mod, ConcurrentBag<OptionsButton>>.ValueCollection commands =
+                Instance.OptionsButtonRegistrar.FromActive().Values;
 
             foreach (ConcurrentBag<OptionsButton> commandsList in commands)
                 buttons.AddRange(commandsList);

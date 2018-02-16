@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading;
 using Monocle;
-using Microsoft.Xna.Framework.Audio;
 using Spire.Command;
 
 namespace MiscAdditions.Commands
@@ -40,7 +33,7 @@ namespace MiscAdditions.Commands
             }
             else
             {
-                foreach (var arg in args)
+                foreach (string arg in args)
                 {
                     switch (arg.ToLower())
                     {
