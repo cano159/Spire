@@ -5,12 +5,16 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Harmony;
+using Monocle;
 using Spire.Atlas;
 using Spire.Command;
 using Spire.Events;
 using Spire.Patches;
 using TowerFall;
 using static Spire.Logger.Logger;
+using Spire.ModMenu;
+using Spire.Arrow;
+using System.Xml;
 
 namespace Spire
 {
@@ -30,16 +34,30 @@ namespace Spire
         internal static HarmonyInstance HarmonyInst { get; private set; }
 
         public ObjectRegistrar<ArcherData> ArcherDataRegistrar = new ObjectRegistrar<ArcherData>();
+
+        public ObjectRegistrar<CustomArrow> ArrowRegistrar = new ObjectRegistrar<CustomArrow>();
         public ObjectRegistrar<ArcherPortrait> ArcherPortraitRegistrar = new ObjectRegistrar<ArcherPortrait>();
         public ObjectRegistrar<AtlasAddition> AtlasAdditionRegistrar = new ObjectRegistrar<AtlasAddition>();
         public ObjectRegistrar<ConsoleCommand> ConsoleCommandsRegistrar = new ObjectRegistrar<ConsoleCommand>();
+        public ObjectRegistrar<Entity> EntityRegistrar = new ObjectRegistrar<Entity>();
         public ObjectRegistrar<Level> LevelRegistrar = new ObjectRegistrar<Level>();
         public ObjectRegistrar<OptionsButton> OptionsButtonRegistrar = new ObjectRegistrar<OptionsButton>();
         public ObjectRegistrar<RoundLogic> RoundLogicRegistrar = new ObjectRegistrar<RoundLogic>();
+        public ObjectRegistrar<Variant> VariantsRegistrar = new ObjectRegistrar<Variant>();
+
+        public ObjectRegistrar<LevelEntity> LevelEntityRegistrar = new ObjectRegistrar<LevelEntity>();
 
         private readonly HashSet<Assembly> _autoHarmonyPatchedAssemblies = new HashSet<Assembly>();
 
         private readonly ConcurrentDictionary<int, Mod> _loadedMods = new ConcurrentDictionary<int, Mod>();
+
+        public IEnumerable<Mod> LoadedMods
+        {
+            get
+            {
+                return _loadedMods.Values;
+            }
+        }
 
         public void Initialize()
         {
@@ -112,7 +130,14 @@ namespace Spire
 
         private void LoadAndInitializeMods()
         {
+            if (!Directory.Exists("Mods"))
+            {
+                LogMessageOnLoad("The 'Mods' directory was not found, creating...");
+                Directory.CreateDirectory("Mods");
+            }
+
             foreach (string currentFile in EnumerateModFiles())
+            {
                 try
                 {
                     Assembly assembly = Assembly.LoadFrom(currentFile);
@@ -124,22 +149,41 @@ namespace Spire
 
                     foreach (Type modType in types)
                     {
-                        var mod = (Mod) Activator.CreateInstance(modType, false);
+                        var loadedMod = TryLoadModFromAssembly(modType, assembly);
 
-                        LogMessageOnLoad($"Loaded {mod.ModName} from {assembly.Location}");
+                        loadedMod.IsActive = true;
+                        loadedMod.OnModLoad();
 
-                        _loadedMods.TryAdd(_loadedMods.Count, mod);
-
-                        mod.ApplyHarmonyPatches();
-
-                        mod.IsActive = true;
-                        mod.OnModLoad();
+                        LogMessageOnLoad($"Loaded {loadedMod.ModName} from {assembly.Location}");
                     }
                 }
                 catch (Exception e)
                 {
                     LogExceptionOnLoad(e);
                 }
+            }
+        }
+
+        private Mod TryLoadModFromAssembly(Type modType, Assembly assembly)
+        {
+            var mod = (Mod)Activator.CreateInstance(modType, false);
+
+            _loadedMods.TryAdd(_loadedMods.Count, mod);
+
+            mod.ApplyHarmonyPatches();
+
+            return mod;
+        }
+
+        private bool TryLoadModFromModObject(Mod modObject)
+        {
+            _loadedMods.TryAdd(_loadedMods.Count, modObject);
+
+            modObject.ApplyHarmonyPatches();
+
+            modObject.IsActive = true;
+            modObject.OnModLoad();
+            return true;
         }
 
         internal void OnPreInitialize()

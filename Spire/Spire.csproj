@@ -51,13 +51,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Archer\ArcherConstructor.cs" />
+    <Compile Include="Arrow\CustomArrow.cs" />
     <Compile Include="Atlas\AtlasAddition.cs" />
     <Compile Include="Atlas\AtlasExtensionMethods.cs" />
     <Compile Include="Atlas\AtlasType.cs" />
-    <Compile Include="Button\OptionsButton.cs" />
     <Compile Include="Button\OptionsButtonType.cs" />
     <Compile Include="Command\ConsoleCommand.cs" />
     <Compile Include="Events\GameUpdatedEventArgs.cs" />
+    <Compile Include="Events\MainMenuStateEventArgs.cs" />
+    <Compile Include="Events\PlayerUpdateEventArgs.cs" />
     <Compile Include="Events\SessionStartEventArgs.cs" />
     <Compile Include="Events\EntityRemovedEventArgs.cs" />
     <Compile Include="Events\EntityAddedEventArgs.cs" />
@@ -67,10 +70,15 @@
     <Compile Include="Events\SceneEventArgs.cs" />
     <Compile Include="Events\TFGameEventArgs.cs" />
     <Compile Include="Globals.cs" />
+    <Compile Include="ModMenu\ModsMenu.cs" />
+    <Compile Include="Patches\ArcherData\ArcherDataOnInitializePatch.cs" />
     <Compile Include="Patches\Atlas\AtlasAddAdditionsPatch.cs" />
     <Compile Include="Patches\Commands\CommandsRemoveToLowerCommandArgumentsPatch.cs" />
-    <Compile Include="Patches\Engine\OnDrawBeginPatch.cs" />
+    <Compile Include="Patches\MainMenu\MainMenuAddSpireVersionTextPatch.cs" />
+    <Compile Include="Patches\MainMenu\MainMenuGetMenuStateChangedPatch.cs" />
+    <Compile Include="Patches\MatchVariants\MatchVariantsAddVariantsPatch.cs" />
     <Compile Include="Patches\MainMenu\MainMenuAddOptionsButtonsPatch.cs" />
+    <Compile Include="Patches\MatchVariants\MatchVariantsSetCoopFlagPatch.cs" />
     <Compile Include="Patches\Scene\SceneOnEndPatch.cs" />
     <Compile Include="Patches\Session\SessionOnGameStartPatch.cs" />
     <Compile Include="Patches\TFGame\TFGameOnGameLoadPatch.cs" />
@@ -90,7 +98,7 @@
     <Compile Include="SpireController.cs" />
     <Compile Include="Settings\SpireSettings.cs" />
     <Compile Include="Settings\SpireVersion.cs" />
-    <Compile Include="SpriteData\SpriteDataAddition.cs" />
+    <Compile Include="ModMenu\SpireModsMenuMod.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Events\EventController.cs" />
@@ -100,6 +108,12 @@
       <Project>{69aee16a-b6e7-4642-8081-3928b32455df}</Project>
       <Name>Harmony</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Patches\Level\" />
+    <Folder Include="Patches\Player\" />
+    <Folder Include="Patches\Screen\" />
+    <Folder Include="Patches\Variant\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

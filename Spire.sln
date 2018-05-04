@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiscAdditions", "MiscAdditi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Harmony", "Harmony\Harmony\Harmony.csproj", "{69AEE16A-B6E7-4642-8081-3928B32455DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MouseAimingMod", "MouseAimingMod\MouseAimingMod.csproj", "{3E8C1A8A-95D3-4516-AE40-5945ED9F265A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MouseKeyboardInputMod", "MouseAimingMod\MouseKeyboardInputMod.csproj", "{3E8C1A8A-95D3-4516-AE40-5945ED9F265A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

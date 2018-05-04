@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Microsoft.Xna.Framework.Graphics;
 using Spire;
 using Spire.Logger;
@@ -37,7 +38,15 @@ namespace SpireModLoader
             {
                 //Exit the game upon exception occuring.
                 Instance.Exit();
+
                 Logger.LogException(e);
+
+                //Also log any inner exceptions to console.
+                if (e.InnerException != null)
+                {
+                    Logger.LogException(e.InnerException);
+                }
+
                 Console.ReadKey();
             }
         }

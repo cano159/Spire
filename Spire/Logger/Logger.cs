@@ -33,11 +33,11 @@ namespace Spire.Logger
             return isException ? $"[Spire]: [ERROR]: {str}" : $"[Spire]: [INFO]: {str}";
         }
 
-        private static void LogException(Exception except, bool isOnLoad)
+        private static void LogException(Exception exception, bool isOnLoad)
         {
-            TFGame.WriteLineToLoadLog(CreateMessageString(except.Message, true));
-            TFGame.Log(except, isOnLoad);
-            Console.WriteLine(CreateMessageString(except.Message, true));
+            TFGame.WriteLineToLoadLog(CreateMessageString(exception.Message, true));
+            TFGame.Log(exception, isOnLoad);
+            Console.WriteLine($"{CreateMessageString(exception.Message, true)}");
         }
     }
 }

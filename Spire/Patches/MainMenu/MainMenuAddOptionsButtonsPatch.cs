@@ -17,8 +17,13 @@ namespace Spire.Patches.MainMenu
             Dictionary<Mod, ConcurrentBag<OptionsButton>>.ValueCollection commands =
                 Instance.OptionsButtonRegistrar.FromActive().Values;
 
-            foreach (ConcurrentBag<OptionsButton> commandsList in commands)
-                buttons.AddRange(commandsList);
+            foreach (ConcurrentBag<OptionsButton> buttonsList in commands)
+            {
+                foreach (var button in buttonsList)
+                {
+                    buttons.Add(button);
+                }
+            }
         }
 
         public override void Patch(HarmonyInstance harmony)

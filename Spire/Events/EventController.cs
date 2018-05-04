@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Monocle;
 using TowerFall;
+using static TowerFall.MainMenu;
 
 namespace Spire.Events
 {
@@ -24,6 +25,10 @@ namespace Spire.Events
         public event EventHandler<SceneEventArgs> OnSceneChange;
         public event EventHandler<SceneEventArgs> OnSceneEnd;
         public event EventHandler<GameUpdatedEventArgs> OnGameUpdate;
+        public event EventHandler<MainMenuStateEventArgs> OnMainMenuStateChange;
+        public event EventHandler<PlayerUpdateEventArgs> OnPlayerUpdate;
+
+        public event EventHandler<EventArgs> OnScreenRender;
 
         internal void GameInitializationStart()
         {
@@ -102,9 +107,25 @@ namespace Spire.Events
             OnDrawBegin?.Invoke(this, new EventArgs());
         }
 
-        internal virtual void GameLoaded()
+        internal void Render()
+        {
+            OnScreenRender?.Invoke(this, new EventArgs());
+        }
+
+        internal void GameLoaded()
         {
             OnGameLoaded?.Invoke(this, EventArgs.Empty);
         }
+
+        internal void MainMenuStateChanged(MainMenu mainMenu, MenuState state)
+        {
+            OnMainMenuStateChange?.Invoke(this, new MainMenuStateEventArgs(mainMenu, state));
+        }
+
+        internal void PlayerUpdate(Player player)
+        {
+            OnPlayerUpdate?.Invoke(this, new PlayerUpdateEventArgs(player));
+        }
+
     }
 }

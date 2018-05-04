@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Monocle;
 using TowerFall;
-using static Monocle.Engine;
 
-namespace MouseAimingMod
+namespace MouseKeyboardInputMod
 {
     public class MouseEnabledPlayerInput : KeyboardInput
     {
@@ -64,6 +64,12 @@ namespace MouseAimingMod
         {
             PlayerIndex = playerIndex;
             _originalKeyboardInput = input;
+            input.Config.Up[0] = Keys.W;
+            input.Config.Down[0] = Keys.S;
+            input.Config.Left[0] = Keys.A;
+            input.Config.Right[0] = Keys.D;
+            input.Config.Jump[0] = Keys.Space;
+            input.Config.Start[0] = Keys.Escape;
         }
 
         public override InputState GetState()
@@ -88,8 +94,8 @@ namespace MouseAimingMod
 
             Vector2 position = GetPlayerPositionFromInputIndex(PlayerIndex);
 
-            var aimVector = new Vector2(mouseState.X / Instance.Screen.Scale - position.X,
-                mouseState.Y / Instance.Screen.Scale - position.Y);
+            var aimVector = new Vector2(mouseState.X / Engine.Instance.Screen.Scale - position.X,
+                mouseState.Y / Engine.Instance.Screen.Scale - position.Y);
 
             inputState.AimAxis = aimVector;
 
@@ -98,7 +104,7 @@ namespace MouseAimingMod
 
         private Vector2 GetPlayerPositionFromInputIndex(int index)
         {
-            IList<Entity> players = Instance.Scene[GameTags.Player];
+            IList<Entity> players = Engine.Instance.Scene[GameTags.Player];
 
             if (players.Count <= 0 || players[index] == null || !players[index].Active)
                 return _oldMousePosition;

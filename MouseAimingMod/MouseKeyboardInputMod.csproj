@@ -7,8 +7,8 @@
     <ProjectGuid>{3E8C1A8A-95D3-4516-AE40-5945ED9F265A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MouseAimingMod</RootNamespace>
-    <AssemblyName>MouseAimingMod</AssemblyName>
+    <RootNamespace>MouseKeyboardInputMod</RootNamespace>
+    <AssemblyName>MouseKeyboardInputMod</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -39,14 +39,19 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SpireModLoader\bin\Debug\SharpDX.dll</HintPath>
     </Reference>
+    <Reference Include="SharpDX.DirectInput, Version=2.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Spire\bin\Debug\SharpDX.DirectInput.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="TowerFall">
       <HintPath>..\SpireModLoader\bin\Debug\TowerFall.exe</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MouseAimingMod.cs" />
+    <Compile Include="MouseKeyboardInputMod.cs" />
     <Compile Include="MouseEnabledPlayerInput.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -57,11 +62,11 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-    <Target Name="RemoveUnwantedReferences" AfterTargets="Build">
-      <Message Text="Removing unwanted references"/>
-	<Delete Files="$(OutputPath)\Mods\TowerFall.exe"/>
-	<Delete Files="$(OutputPath)\Mods\Spire.dll"/>
-	<Delete Files="$(OutputPath)\Mods\TowerFall.exe"/>
-	<Delete Files="$(OutputPath)\Mods\Spire.dll"/>
-    </Target>
+  <Target Name="RemoveUnwantedReferences" AfterTargets="Build">
+    <Message Text="Removing unwanted references" />
+    <Delete Files="$(OutputPath)\Mods\TowerFall.exe" />
+    <Delete Files="$(OutputPath)\Mods\Spire.dll" />
+    <Delete Files="$(OutputPath)\Mods\TowerFall.exe" />
+    <Delete Files="$(OutputPath)\Mods\Spire.dll" />
+  </Target>
 </Project>

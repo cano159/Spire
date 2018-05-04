@@ -11,7 +11,7 @@ namespace Spire.Patches.RoundLogic
         public static MethodInfo TargetMethod =
             typeof(TowerFall.RoundLogic).GetMethod("OnPlayerDeath", BindingFlags.Public | BindingFlags.Instance);
 
-        public static void Postfix(Player player, PlayerCorpse corpse, int playerIndex, DeathCause cause,
+        public static void Postfix(TowerFall.Player player, PlayerCorpse corpse, int playerIndex, DeathCause cause,
             Vector2 position, int killerIndex)
         {
             EventController.Instance.PlayerDeath(player, corpse, playerIndex, cause, position, killerIndex);
