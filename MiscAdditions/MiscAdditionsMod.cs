@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using MiscAdditions.Commands;
 using Spire;
+using TowerFall;
 using static MiscAdditions.ExtensionMethods;
 using static Monocle.Engine;
 
@@ -30,6 +31,7 @@ namespace MiscAdditions
         {
             SpireController.Instance.ConsoleCommandsRegistrar.Add(this, new UnlockEverythingCommand());
             SpireController.Instance.ConsoleCommandsRegistrar.Add(this, new MusicConsoleCommand());
+            SpireController.Instance.ConsoleCommandsRegistrar.Add(this, new SpawnEntityConsoleCommand());
 
             OriginalScaledWidth = Instance.Screen.ScaledWidth;
             OriginalScaledHeight = Instance.Screen.ScaledHeight;
@@ -39,7 +41,6 @@ namespace MiscAdditions
             _window.SizeChanged += _window_SizeChanged;
 
             Instance.Window.AllowUserResizing = true;
-
         }
 
         private void _window_SizeChanged(object sender, EventArgs e)

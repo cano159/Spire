@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
 using Harmony;
 using Microsoft.Xna.Framework;
 using Spire.Events;
+using Spire.Patches;
 using static Harmony.HarmonyInstance;
 
 namespace Spire

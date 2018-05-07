@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MiscAdditions</RootNamespace>
     <AssemblyName>MiscAdditions</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -23,6 +23,7 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,6 +32,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553" />
@@ -55,12 +57,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\MusicConsoleCommand.cs" />
+    <Compile Include="Commands\SpawnEntityConsoleCommand.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="MiscAdditionsMod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Commands\UnlockEverythingConsoleCommand.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Harmony\Harmony\Harmony.csproj">
+      <Project>{69AEE16A-B6E7-4642-8081-3928B32455DF}</Project>
+      <Name>Harmony</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Spire\Spire.csproj">
       <Project>{DCB8456E-B225-4851-B1C2-3A54804081D2}</Project>
       <Name>Spire</Name>

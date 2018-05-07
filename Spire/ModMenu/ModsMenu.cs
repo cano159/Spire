@@ -13,31 +13,42 @@ namespace Spire.ModMenu
     {
         public IEnumerable<OptionsButton> Buttons;
 
-        public static MethodInfo InitOptionsMethodInfo =
-            typeof(MainMenu).GetMethod("InitOptions", BindingFlags.NonPublic | BindingFlags.Instance);
-
-        public ModsMenu(MainMenu menu, IEnumerable<OptionsButton> modButtons)
+        public ModsMenu(IEnumerable<Mod> mods)
         {
-            OptionsButton[] buttonsArray = modButtons.ToArray();
+            Buttons = GetModMenuButtons(mods);
+        }
 
-            for (var i = 0; i < buttonsArray.Length; i++)
+        private IEnumerable<OptionsButton> GetModMenuButtons(IEnumerable<Mod> mods)
+        {
+            foreach (var mod in mods)
             {
-                OptionsButton optionsButton = buttonsArray[i];
-                optionsButton.TweenTo = new Vector2(200f, 45 + i * 12);
-                optionsButton.Position = optionsButton.TweenFrom =
-                    new Vector2(i % 2 == 0 ? -160 : 480, 45 + i * 12);
-                if (i > 0)
-                    optionsButton.UpItem = buttonsArray[i - 1];
-                if (i < buttonsArray.Length - 1)
-                    optionsButton.DownItem = buttonsArray[i + 1];
-            }
-
-            Buttons = buttonsArray.ToList();
-
-            foreach (var button in Buttons)
-            {
-                menu.Add(button);
+                yield return GetModMenuButton(mod);
             }
         }
+
+        private OptionsButton GetModMenuButton(Mod mod)
+        {
+            var modButton = new OptionsButton(mod.ModName.ToUpper());
+
+            modButton.SetCallbacks(
+                delegate { modButton.State = ExtensionMethods.BoolToString(mod.IsActive); }, 
+                null, 
+                null,
+                delegate
+                {
+                    if (mod.IsActive)
+                    {
+                        SpireController.Instance.DisableMod(mod);
+                    }
+                    else
+                    {
+                        SpireController.Instance.EnableMod(mod);
+                    }
+                    return mod.IsActive;
+                });
+
+            return modButton;
+        }
+
     }
 }

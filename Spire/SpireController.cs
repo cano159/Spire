@@ -126,8 +126,7 @@ namespace Spire
 
             LogMessageOnLoad($"Applied {counter} of {total} patches.");
         }
-
-
+    
         private void LoadAndInitializeMods()
         {
             if (!Directory.Exists("Mods"))
@@ -162,6 +161,9 @@ namespace Spire
                     LogExceptionOnLoad(e);
                 }
             }
+
+            SpireModsMenuMod modsMenu = new SpireModsMenuMod();
+            TryLoadModFromModObject(modsMenu);
         }
 
         private Mod TryLoadModFromAssembly(Type modType, Assembly assembly)

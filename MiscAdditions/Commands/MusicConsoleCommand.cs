@@ -56,13 +56,12 @@ namespace MiscAdditions.Commands
                         case "play":
                             if (args.Length >= 1)
                                 PlaySong(args[1]);
+                            else
+                                Music.Play(_previousSong);
                             break;
                         case "stop":
                             _previousSong = Music.CurrentSong;
                             Music.Stop();
-                            break;
-                        case "start":
-                            Music.Play(_previousSong);
                             break;
                     }
 

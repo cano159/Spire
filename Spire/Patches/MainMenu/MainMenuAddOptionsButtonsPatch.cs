@@ -14,15 +14,12 @@ namespace Spire.Patches.MainMenu
 
         public static void Prefix(TowerFall.MainMenu __instance, ref List<OptionsButton> buttons)
         {
-            Dictionary<Mod, ConcurrentBag<OptionsButton>>.ValueCollection commands =
+            Dictionary<Mod, ConcurrentBag<OptionsButton>>.ValueCollection buttonsFromRegistrar =
                 Instance.OptionsButtonRegistrar.FromActive().Values;
 
-            foreach (ConcurrentBag<OptionsButton> buttonsList in commands)
+            foreach (ConcurrentBag<OptionsButton> buttonsList in buttonsFromRegistrar)
             {
-                foreach (var button in buttonsList)
-                {
-                    buttons.Add(button);
-                }
+                buttons.AddRange(buttonsList);
             }
         }
 

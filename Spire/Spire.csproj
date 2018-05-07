@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Spire</RootNamespace>
     <AssemblyName>Spire</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -22,8 +22,9 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -33,6 +34,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553" />
@@ -58,6 +60,8 @@
     <Compile Include="Atlas\AtlasType.cs" />
     <Compile Include="Button\OptionsButtonType.cs" />
     <Compile Include="Command\ConsoleCommand.cs" />
+    <Compile Include="Events\CommandEventArgs.cs" />
+    <Compile Include="Events\CommandsTraceEventArgs.cs" />
     <Compile Include="Events\GameUpdatedEventArgs.cs" />
     <Compile Include="Events\MainMenuStateEventArgs.cs" />
     <Compile Include="Events\PlayerUpdateEventArgs.cs" />
@@ -73,7 +77,9 @@
     <Compile Include="ModMenu\ModsMenu.cs" />
     <Compile Include="Patches\ArcherData\ArcherDataOnInitializePatch.cs" />
     <Compile Include="Patches\Atlas\AtlasAddAdditionsPatch.cs" />
-    <Compile Include="Patches\Commands\CommandsRemoveToLowerCommandArgumentsPatch.cs" />
+    <Compile Include="Patches\Commands\CommandsRemoveToLowerArgumentsPatch.cs" />
+    <Compile Include="Patches\Commands\CommandsOnTracePatch.cs" />
+    <Compile Include="Patches\Commands\CommandsOnLogPatch.cs" />
     <Compile Include="Patches\MainMenu\MainMenuAddSpireVersionTextPatch.cs" />
     <Compile Include="Patches\MainMenu\MainMenuGetMenuStateChangedPatch.cs" />
     <Compile Include="Patches\MatchVariants\MatchVariantsAddVariantsPatch.cs" />
@@ -113,7 +119,6 @@
     <Folder Include="Patches\Level\" />
     <Folder Include="Patches\Player\" />
     <Folder Include="Patches\Screen\" />
-    <Folder Include="Patches\Variant\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

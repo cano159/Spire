@@ -4,19 +4,25 @@ using Spire.Events;
 
 namespace Spire.Patches.TFGame
 {
-    public class TfGameOnGameLoadPatch : SpirePatch
+    public class TfGameOnGameLoadedPatch : SpirePatch
     {
-        public static MethodInfo TargetMethod =
-            typeof(TowerFall.TFGame).GetMethod("Load", BindingFlags.Public | BindingFlags.Static);
+        public static MethodInfo SetGameLoadedMethod =
+            typeof(TowerFall.TFGame).GetMethod("MainMenuLoadWait", BindingFlags.Public | BindingFlags.Static);
+
+        private static bool wasAlreadyLoaded = false;
 
         public static void Postfix()
         {
-            EventController.Instance.GameLoaded();
+            if (!wasAlreadyLoaded)
+            {
+                wasAlreadyLoaded = true;
+                EventController.Instance.GameLoaded();
+            }
         }
 
         public override void Patch(HarmonyInstance harmony)
         {
-            PatchPostfix(harmony, TargetMethod);
+            PatchPostfix(harmony, SetGameLoadedMethod);
         }
     }
 }

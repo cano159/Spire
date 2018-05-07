@@ -28,6 +28,10 @@ namespace Spire.Events
         public event EventHandler<MainMenuStateEventArgs> OnMainMenuStateChange;
         public event EventHandler<PlayerUpdateEventArgs> OnPlayerUpdate;
 
+        public event EventHandler<CommandsLogEventArgs> OnCommandsLogFunctionInvoke;
+        public event EventHandler<CommandsTraceEventArgs> OnCommandTraceFunctionInvoke;
+
+
         public event EventHandler<EventArgs> OnScreenRender;
 
         internal void GameInitializationStart()
@@ -125,6 +129,16 @@ namespace Spire.Events
         internal void PlayerUpdate(Player player)
         {
             OnPlayerUpdate?.Invoke(this, new PlayerUpdateEventArgs(player));
+        }
+
+        internal void CommandLogFunction(string str)
+        {
+            OnCommandsLogFunctionInvoke?.Invoke(this, new CommandsLogEventArgs(str));
+        }
+
+        internal void CommandTraceFunction(object str)
+        {
+            OnCommandTraceFunctionInvoke?.Invoke(this, new CommandsTraceEventArgs(str));
         }
 
     }
