@@ -151,7 +151,7 @@ namespace Spire
                         var loadedMod = TryLoadModFromAssembly(modType, assembly);
 
                         loadedMod.IsActive = true;
-                        loadedMod.OnModLoad();
+                        loadedMod.OnModEnabled();
 
                         LogMessageOnLoad($"Loaded {loadedMod.ModName} from {assembly.Location}");
                     }
@@ -184,7 +184,7 @@ namespace Spire
             modObject.ApplyHarmonyPatches();
 
             modObject.IsActive = true;
-            modObject.OnModLoad();
+            modObject.OnModEnabled();
             return true;
         }
 

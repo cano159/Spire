@@ -27,7 +27,7 @@ namespace MiscAdditions
 
         private readonly Form _window = Control.FromHandle(Instance.Window.Handle).FindForm();
 
-        public override void OnModLoad()
+        public override void OnModEnabled()
         {
             SpireController.Instance.ConsoleCommandsRegistrar.Add(this, new UnlockEverythingCommand());
             SpireController.Instance.ConsoleCommandsRegistrar.Add(this, new MusicConsoleCommand());
@@ -41,6 +41,17 @@ namespace MiscAdditions
             _window.SizeChanged += _window_SizeChanged;
 
             Instance.Window.AllowUserResizing = true;
+        }
+
+        public override void OnModDisabled()
+        {
+            SpireController.Instance.ConsoleCommandsRegistrar.RevokeAll(this);
+
+            OriginalScale = Instance.Screen.Scale;
+
+            _window.SizeChanged -= _window_SizeChanged;
+
+            Instance.Window.AllowUserResizing = false;
         }
 
         private void _window_SizeChanged(object sender, EventArgs e)

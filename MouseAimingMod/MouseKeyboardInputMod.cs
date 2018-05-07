@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Monocle;
@@ -32,7 +33,11 @@ namespace MouseKeyboardInputMod
         public static FieldInfo PauseMenuOptionActions =
             typeof(PauseMenu).GetField("optionActions", BindingFlags.NonPublic | BindingFlags.Instance);
 
-        public override void OnModLoad()
+        public override void OnModEnabled()
+        {
+        }
+
+        public override void OnModDisabled()
         {
         }
 

@@ -25,7 +25,8 @@ namespace Spire
 
         public bool IsActive { get; internal set; }
 
-        public abstract void OnModLoad();
+        public abstract void OnModEnabled();
+        public abstract void OnModDisabled();
 
         public abstract void Update(GameTime time);
 

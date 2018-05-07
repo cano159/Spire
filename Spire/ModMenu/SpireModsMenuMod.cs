@@ -26,10 +26,13 @@ namespace Spire.ModMenu
 
         private MainMenu mainMenu;
 
-        public override void OnModLoad()
+        public override void OnModEnabled()
         {
             EventController.Instance.OnMainMenuStateChange += Instance_OnMainMenuStateChange;
             EventController.Instance.OnGameLoaded += Instance_OnGameLoaded;
+        }
+        public override void OnModDisabled()
+        {
         }
 
         private void Instance_OnGameLoaded(object sender, EventArgs e)
