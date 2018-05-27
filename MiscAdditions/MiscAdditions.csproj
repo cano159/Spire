@@ -64,10 +64,6 @@
     <Compile Include="Commands\UnlockEverythingConsoleCommand.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Harmony\Harmony\Harmony.csproj">
-      <Project>{69AEE16A-B6E7-4642-8081-3928B32455DF}</Project>
-      <Name>Harmony</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Spire\Spire.csproj">
       <Project>{DCB8456E-B225-4851-B1C2-3A54804081D2}</Project>
       <Name>Spire</Name>

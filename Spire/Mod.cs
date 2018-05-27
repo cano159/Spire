@@ -1,18 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
+using System.Linq;
 using Harmony;
 using Microsoft.Xna.Framework;
 using Spire.Events;
-using Spire.Patches;
 using static Harmony.HarmonyInstance;
 
 namespace Spire
 {
     public abstract class Mod
     {
-        public const string HarmonyInstancePrefix = "Spire.";
-
         protected virtual bool HarmonyAutoPatch => true;
 
         protected HarmonyInstance HarmonyInstance { get; set; }
@@ -32,17 +28,20 @@ namespace Spire
 
         internal void ApplyHarmonyPatches()
         {
-            if (!HarmonyAutoPatch) return;
+            if (!HarmonyAutoPatch)
+                return;
 
-            string harmonyId = $"{HarmonyInstancePrefix}.{ModName}";
+            string harmonyId = $"{SpireController.HarmonyInstanceIdentifier}.{GetCorrectedModId()}";
 
             try
             {
-                if (!SpireController.Instance.ShouldHarmonyAutoPatch(GetType().Assembly, ModName))
+                if (!SpireController.Instance.ShouldHarmonyAutoPatch(GetType().Assembly, harmonyId))
                     return;
 
                 HarmonyInstance = Create(harmonyId);
+
                 HarmonyInstance.PatchAll(GetType().Assembly);
+
                 EventController.Instance.OnGameUpdate += Instance_OnGameUpdate;
             }
             catch (Exception e)
@@ -55,6 +54,11 @@ namespace Spire
         {
             if (IsActive)
                 Update(e.Time);
+        }
+
+        internal string GetCorrectedModId()
+        {
+            return GetType().Assembly.GetName().Name.Replace(' ', '_');
         }
     }
 }

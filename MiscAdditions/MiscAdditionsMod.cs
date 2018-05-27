@@ -4,7 +4,6 @@ using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using MiscAdditions.Commands;
 using Spire;
-using TowerFall;
 using static MiscAdditions.ExtensionMethods;
 using static Monocle.Engine;
 
@@ -18,9 +17,9 @@ namespace MiscAdditions
         public override string ModDescription =>
             "Adds random fixes and tweaks to the base game - including window resizing and additional console commands.";
 
-        public float OriginalScale;
-        public float OriginalScaledHeight;
-        public float OriginalScaledWidth;
+        public float OriginalScale { get; private set; }
+        public float OriginalScaledHeight { get; private set; }
+        public float OriginalScaledWidth { get; private set; }
 
         private TimeSpan _counterElapsed = TimeSpan.Zero;
         private int _fpsCounter;
@@ -29,17 +28,21 @@ namespace MiscAdditions
 
         public override void OnModEnabled()
         {
+            //Register our console commands with the spire controller.
             SpireController.Instance.ConsoleCommandsRegistrar.Add(this, new UnlockEverythingCommand());
             SpireController.Instance.ConsoleCommandsRegistrar.Add(this, new MusicConsoleCommand());
             SpireController.Instance.ConsoleCommandsRegistrar.Add(this, new SpawnEntityConsoleCommand());
 
+            //Gets the scaled width, height and scale for resizing.
             OriginalScaledWidth = Instance.Screen.ScaledWidth;
             OriginalScaledHeight = Instance.Screen.ScaledHeight;
-
             OriginalScale = Instance.Screen.Scale;
 
+
+            //Set event to track when a window is resized.
             _window.SizeChanged += _window_SizeChanged;
 
+            //Enable the user to resize the game window. 
             Instance.Window.AllowUserResizing = true;
         }
 
@@ -52,32 +55,39 @@ namespace MiscAdditions
             _window.SizeChanged -= _window_SizeChanged;
 
             Instance.Window.AllowUserResizing = false;
+            _window.ControlBox = false;
         }
 
         private void _window_SizeChanged(object sender, EventArgs e)
         {
-            if (_window.Width <= 0 || _window.Height <= 0 || Instance.Screen.Graphics.IsFullScreen 
-                || Instance.Screen.DrawRect.Width == 0 || Instance.Screen.DrawRect.Height == 0 )
-                return;
-
             _window.SizeChanged -= _window_SizeChanged;
 
-            ResizeGameWindow();
+            Instance.Screen.Scale = GetNewScale(_window.ClientRectangle.Width, _window.ClientRectangle.Height, Instance.Screen.ScaledWidth, Instance.Screen.ScaledHeight, Instance.Screen.Scale);
 
             _window.SizeChanged += _window_SizeChanged;
         }
 
-        private void ResizeGameWindow()
-        {
-            float diffWidth = _window.ClientRectangle.Width - Instance.Screen.ScaledWidth;
-            float diffHeight = _window.ClientRectangle.Height - Instance.Screen.ScaledHeight;
+        /// <summary>
+        /// Gets the approximate new scale for the game window using the old screen size and scale
+        /// </summary>
+        /// <param name="screenWidth">The changed screen width</param>
+        /// <param name="screenHeight">The changed screen height</param>
+        /// <param name="scaledWidth">The old scaled width</param>
+        /// <param name="scaledHeight">The old scaled height</param>
+        /// <param name="originalScale">The original scale set by the game</param>
+        /// <returns>The new scale</returns>
+        private static float GetNewScale(int screenWidth, int screenHeight, int scaledWidth, int scaledHeight, float originalScale)
+        {    
+            //get the differences between the old and new sizes
+            float differenceWidth = screenWidth - scaledWidth;
+            float differenceHeight = screenHeight - scaledHeight;
 
-            float scaleDifferenceWidth = OriginalScale / (Instance.Screen.ScaledWidth / diffWidth);
-            float scaleDiffHeightWidth = OriginalScale / (Instance.Screen.ScaledHeight / diffHeight);
+            //get the approximate scale using the difference in scale and scaled width/height
+            float scaledDifferenceWidth = originalScale / (scaledWidth / differenceWidth);
+            float scaledDifferenceHeight = originalScale / (scaledHeight / differenceHeight);
 
-            OriginalScale += (scaleDifferenceWidth + scaleDiffHeightWidth / OriginalScale);
-
-            Instance.Screen.Scale = OriginalScale;
+            //Add the new scale to the old one. If the scale is smaller, the value will subtract from the existing scale. 
+            return originalScale + scaledDifferenceWidth + scaledDifferenceHeight / originalScale;
         }
 
         public override void Update(GameTime time)

@@ -6,24 +6,19 @@ using System.Linq;
 using System.Reflection;
 using Harmony;
 using Monocle;
+using Spire.Arrow;
 using Spire.Atlas;
 using Spire.Command;
 using Spire.Events;
-using Spire.Patches;
 using TowerFall;
 using static Spire.Logger.Logger;
-using Spire.ModMenu;
-using Spire.Arrow;
-using System.Xml;
 
 namespace Spire
 {
     public class SpireController
     {
-        private const string ModIdentifier = "Spire";
-        private const string HarmonyInstanceIdentifier = "Spire.Harmony";
-
-        private static SpirePatch[] _patches;
+        public const string ModIdentifier = "Spire";
+        public const string HarmonyInstanceIdentifier = "Spire.Harmony";
 
         private static bool _isInitializationInProgress;
 
@@ -33,40 +28,35 @@ namespace Spire
 
         internal static HarmonyInstance HarmonyInst { get; private set; }
 
+        public IEnumerable<Mod> LoadedMods => _loadedMods.Values;
+
         public ObjectRegistrar<ArcherData> ArcherDataRegistrar = new ObjectRegistrar<ArcherData>();
+        public ObjectRegistrar<ArcherPortrait> ArcherPortraitRegistrar = new ObjectRegistrar<ArcherPortrait>();
 
         public ObjectRegistrar<CustomArrow> ArrowRegistrar = new ObjectRegistrar<CustomArrow>();
-        public ObjectRegistrar<ArcherPortrait> ArcherPortraitRegistrar = new ObjectRegistrar<ArcherPortrait>();
         public ObjectRegistrar<AtlasAddition> AtlasAdditionRegistrar = new ObjectRegistrar<AtlasAddition>();
         public ObjectRegistrar<ConsoleCommand> ConsoleCommandsRegistrar = new ObjectRegistrar<ConsoleCommand>();
         public ObjectRegistrar<Entity> EntityRegistrar = new ObjectRegistrar<Entity>();
+        public ObjectRegistrar<LevelEntity> LevelEntityRegistrar = new ObjectRegistrar<LevelEntity>();
         public ObjectRegistrar<Level> LevelRegistrar = new ObjectRegistrar<Level>();
         public ObjectRegistrar<OptionsButton> OptionsButtonRegistrar = new ObjectRegistrar<OptionsButton>();
         public ObjectRegistrar<RoundLogic> RoundLogicRegistrar = new ObjectRegistrar<RoundLogic>();
         public ObjectRegistrar<Variant> VariantsRegistrar = new ObjectRegistrar<Variant>();
 
-        public ObjectRegistrar<LevelEntity> LevelEntityRegistrar = new ObjectRegistrar<LevelEntity>();
-
         private readonly HashSet<Assembly> _autoHarmonyPatchedAssemblies = new HashSet<Assembly>();
 
         private readonly ConcurrentDictionary<int, Mod> _loadedMods = new ConcurrentDictionary<int, Mod>();
-
-        public IEnumerable<Mod> LoadedMods
-        {
-            get
-            {
-                return _loadedMods.Values;
-            }
-        }
 
         public void Initialize()
         {
             try
             {
                 EventController.Instance.OnGameLoaded += Instance_OnGameLoaded;
+
                 ApplyHarmonyPatches();
+
                 LoadAndInitializeMods();
-                ApplyPersistentGamePatches();
+
             }
             catch (Exception e)
             {
@@ -96,37 +86,6 @@ namespace Spire
             }
         }
 
-        private static void ApplyPersistentGamePatches()
-        {
-            if (_patches != null)
-                return;
-
-            IEnumerable<SpirePatch> discoveredPatches =
-                ExtensionMethods.GetEnumerableOfType<SpirePatch>(Assembly.GetExecutingAssembly());
-
-            var counter = 0;
-            var total = 0;
-
-            foreach (SpirePatch patch in discoveredPatches)
-            {
-                try
-                {
-                    patch.Patch(HarmonyInst);
-                    _patches.AddToArray(patch);
-                    counter++;
-                }
-                catch (Exception e)
-                {
-                    LogMessageOnLoad($"Patch {patch.GetType().Name} failed to apply.");
-                    LogExceptionOnLoad(e);
-                }
-
-                total++;
-            }
-
-            LogMessageOnLoad($"Applied {counter} of {total} patches.");
-        }
-    
         private void LoadAndInitializeMods()
         {
             if (!Directory.Exists("Mods"))
@@ -136,48 +95,37 @@ namespace Spire
             }
 
             foreach (string currentFile in EnumerateModFiles())
-            {
                 try
                 {
                     Assembly assembly = Assembly.LoadFrom(currentFile);
 
                     List<Type> types = assembly.GetExportedTypes().Where(x => x.BaseType == typeof(Mod)).ToList();
 
-                    if (types.Count < 0)
+                    if (types.Count <= 0)
                         continue;
 
                     foreach (Type modType in types)
                     {
-                        var loadedMod = TryLoadModFromAssembly(modType, assembly);
+                        Mod loadedMod = TryLoadModFromAssembly(modType);
 
-                        loadedMod.IsActive = true;
-                        loadedMod.OnModEnabled();
-
-                        LogMessageOnLoad($"Loaded {loadedMod.ModName} from {assembly.Location}");
+                        LogMessageOnLoad($"Loaded {loadedMod.ModName} from {Path.GetFileName(assembly.Location)}");
                     }
+
                 }
                 catch (Exception e)
                 {
                     LogExceptionOnLoad(e);
                 }
-            }
-
-            SpireModsMenuMod modsMenu = new SpireModsMenuMod();
-            TryLoadModFromModObject(modsMenu);
         }
 
-        private Mod TryLoadModFromAssembly(Type modType, Assembly assembly)
+        private Mod TryLoadModFromAssembly(Type modType)
         {
             var mod = (Mod)Activator.CreateInstance(modType, false);
 
-            _loadedMods.TryAdd(_loadedMods.Count, mod);
-
-            mod.ApplyHarmonyPatches();
-
-            return mod;
+            return TryLoadModFromModObject(mod);
         }
 
-        private bool TryLoadModFromModObject(Mod modObject)
+        private Mod TryLoadModFromModObject(Mod modObject)
         {
             _loadedMods.TryAdd(_loadedMods.Count, modObject);
 
@@ -185,7 +133,8 @@ namespace Spire
 
             modObject.IsActive = true;
             modObject.OnModEnabled();
-            return true;
+
+            return modObject;
         }
 
         internal void OnPreInitialize()
@@ -227,5 +176,6 @@ namespace Spire
             return Directory.EnumerateFiles(Globals.SpireModsDirectory, "*.dll",
                 SearchOption.AllDirectories);
         }
+
     }
 }

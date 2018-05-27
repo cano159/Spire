@@ -28,6 +28,9 @@ namespace Spire.Events
         public event EventHandler<MainMenuStateEventArgs> OnMainMenuStateChange;
         public event EventHandler<PlayerUpdateEventArgs> OnPlayerUpdate;
 
+        public event EventHandler<ActorEventArgs> OnActorAdded;
+        public event EventHandler<ActorEventArgs> OnActorRemoved;
+
         public event EventHandler<CommandsLogEventArgs> OnCommandsLogFunctionInvoke;
         public event EventHandler<CommandsTraceEventArgs> OnCommandTraceFunctionInvoke;
 
@@ -121,7 +124,7 @@ namespace Spire.Events
             OnGameLoaded?.Invoke(this, EventArgs.Empty);
         }
 
-        internal void MainMenuStateChanged(MainMenu mainMenu, MenuState state)
+        internal void MainMenuStateChanged(TowerFall.MainMenu mainMenu, MenuState state)
         {
             OnMainMenuStateChange?.Invoke(this, new MainMenuStateEventArgs(mainMenu, state));
         }
@@ -140,6 +143,14 @@ namespace Spire.Events
         {
             OnCommandTraceFunctionInvoke?.Invoke(this, new CommandsTraceEventArgs(str));
         }
+        internal void ActorAdded(Actor actor)
+        {
+            OnActorAdded?.Invoke(this, new ActorEventArgs(actor));
+        }
 
+        internal void ActorRemoved(Actor actor)
+        {
+            OnActorRemoved?.Invoke(this, new ActorEventArgs(actor));
+        }
     }
 }

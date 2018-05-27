@@ -1,11 +1,9 @@
-﻿using Harmony;
-using Monocle;
-using Spire.Command;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
+using Monocle;
+using Spire.Command;
 
 namespace MiscAdditions.Commands
 {
@@ -17,7 +15,7 @@ namespace MiscAdditions.Commands
         }
 
         /// <summary>
-        /// The console command's invoke method upon the command being entered. 
+        ///     The console command's invoke method upon the command being entered.
         /// </summary>
         /// <param name="args"></param>
         public override void Invoke(string[] args)
@@ -27,10 +25,7 @@ namespace MiscAdditions.Commands
             {
                 string entityName = args[0];
 
-                if (!entityName.Contains("TowerFall."))
-                {
-                    entityName = GetAdjustedEntityName(entityName);
-                }
+                if (!entityName.Contains("TowerFall.")) entityName = GetAdjustedEntityName(entityName);
 
                 Type entityType = GetType(entityName, "TowerFall");
 
@@ -42,27 +37,28 @@ namespace MiscAdditions.Commands
                         return;
                     }
 
-                    var constructors = entityType.GetConstructors();
+                    ConstructorInfo[] constructors = entityType.GetConstructors();
 
-                    if (constructors.Any(x => x.GetParameters().Count() == 0) && args.Length == 1)
+                    if (constructors.Any(x => !x.GetParameters().Any()) && args.Length == 1)
                     {
-                        TrySpawnEntity((Entity)Activator.CreateInstance(entityType));
+                        TrySpawnEntity((Entity) Activator.CreateInstance(entityType));
                     }
 
                     else if (args.Length > 1)
                     {
-                        var convertedParameters = TryConvertParameters(constructors, args.Skip(1).ToList());
+                        IEnumerable<object> convertedParameters =
+                            TryConvertParameters(constructors, args.Skip(1).ToList());
 
-                        Entity entity = (Entity)Activator.CreateInstance(entityType, convertedParameters.ToArray());
+                        var entity = (Entity) Activator.CreateInstance(entityType, convertedParameters.ToArray());
 
                         TrySpawnEntity(entity);
                     }
                     else
                     {
                         Log($"Object {entityType} has no parameterless constructor.");
-                        Log($"Constructor with lowest amount of parameters: {constructors.OrderBy(x => x.GetParameters().Count()).First()}");
+                        Log(
+                            $"Constructor with lowest amount of parameters: {constructors.OrderBy(x => x.GetParameters().Length).First()}");
                     }
-
                 }
                 else
                 {
@@ -88,53 +84,40 @@ namespace MiscAdditions.Commands
 
         private IEnumerable<object> TryConvertParameters(IEnumerable<ConstructorInfo> constructors, List<string> list)
         {
-            int paramsCounter = 0;
+            var paramsCounter = 0;
 
-            foreach (var constructor in constructors)
+            foreach (ConstructorInfo constructor in constructors)
             {
-                if (constructor.GetParameters().Count() != list.Count())
-                {
+                if (constructor.GetParameters().Length != list.Count)
                     continue;
-                }
 
-                foreach (var parameter in constructor.GetParameters())
+                foreach (ParameterInfo parameter in constructor.GetParameters())
                 {
                     if (list[paramsCounter] == "null")
-                    {
                         yield return null;
-                    }
 
-                    var type = parameter.ParameterType;
-
-                    if (TryCast(list[paramsCounter], parameter.ParameterType, out object castedObject))
-                    {
-                        paramsCounter++;
-                        yield return castedObject;
-                    }
-                    else
-                    {
+                    if (!TryCast(list[paramsCounter], parameter.ParameterType, out object castedObject))
                         continue;
-                    }
-                }
 
+                    paramsCounter++;
+                    yield return castedObject;
+                }
             }
-            
         }
 
-        private bool TryCast(object obj, Type typeToCastTo, out object result)
+        private static bool TryCast(object obj, Type typeToCastTo, out object result)
         {
             try
             {
-                var castResult = Convert.ChangeType(obj, typeToCastTo);
+                object castResult = Convert.ChangeType(obj, typeToCastTo);
                 result = castResult;
                 return true;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 result = null;
                 return false;
             }
         }
-
     }
 }

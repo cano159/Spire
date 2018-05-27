@@ -22,7 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
@@ -58,10 +58,10 @@
     <Compile Include="Atlas\AtlasAddition.cs" />
     <Compile Include="Atlas\AtlasExtensionMethods.cs" />
     <Compile Include="Atlas\AtlasType.cs" />
-    <Compile Include="Button\OptionsButtonType.cs" />
     <Compile Include="Command\ConsoleCommand.cs" />
     <Compile Include="Events\CommandEventArgs.cs" />
     <Compile Include="Events\CommandsTraceEventArgs.cs" />
+    <Compile Include="Events\ActorEventArgs.cs" />
     <Compile Include="Events\GameUpdatedEventArgs.cs" />
     <Compile Include="Events\MainMenuStateEventArgs.cs" />
     <Compile Include="Events\PlayerUpdateEventArgs.cs" />
@@ -74,51 +74,33 @@
     <Compile Include="Events\SceneEventArgs.cs" />
     <Compile Include="Events\TFGameEventArgs.cs" />
     <Compile Include="Globals.cs" />
-    <Compile Include="ModMenu\ModsMenu.cs" />
-    <Compile Include="Patches\ArcherData\ArcherDataOnInitializePatch.cs" />
-    <Compile Include="Patches\Atlas\AtlasAddAdditionsPatch.cs" />
-    <Compile Include="Patches\Commands\CommandsRemoveToLowerArgumentsPatch.cs" />
-    <Compile Include="Patches\Commands\CommandsOnTracePatch.cs" />
-    <Compile Include="Patches\Commands\CommandsOnLogPatch.cs" />
-    <Compile Include="Patches\MainMenu\MainMenuAddSpireVersionTextPatch.cs" />
-    <Compile Include="Patches\MainMenu\MainMenuGetMenuStateChangedPatch.cs" />
-    <Compile Include="Patches\MatchVariants\MatchVariantsAddVariantsPatch.cs" />
-    <Compile Include="Patches\MainMenu\MainMenuAddOptionsButtonsPatch.cs" />
-    <Compile Include="Patches\MatchVariants\MatchVariantsSetCoopFlagPatch.cs" />
-    <Compile Include="Patches\Scene\SceneOnEndPatch.cs" />
-    <Compile Include="Patches\Session\SessionOnGameStartPatch.cs" />
-    <Compile Include="Patches\TFGame\TFGameOnGameLoadPatch.cs" />
-    <Compile Include="Patches\TFGame\TFGameOnGameUpdatePatch.cs" />
+    <Compile Include="Patches\ArcherDataPatches.cs" />
+    <Compile Include="Patches\AtlasPatches.cs" />
+    <Compile Include="Patches\CommandsPatches.cs" />
+    <Compile Include="Patches\MatchVariantsPatches.cs" />
+    <Compile Include="Patches\MainMenuPatches.cs" />
+    <Compile Include="Patches\ScenePatches.cs" />
+    <Compile Include="Patches\SessionPatches.cs" />
+    <Compile Include="Patches\TFGamePatches.cs" />
     <Compile Include="Logger\Logger.cs" />
     <Compile Include="Mod.cs" />
     <Compile Include="ModConfig.cs" />
-    <Compile Include="Patches\Commands\CommandsRegisterCommandPatch.cs" />
     <Compile Include="ExtensionMethods.cs" />
-    <Compile Include="Patches\RoundLogic\RoundLogicOnPlayerDeathPatch.cs" />
-    <Compile Include="Patches\Scene\SceneOnBeginPatch.cs" />
-    <Compile Include="Patches\Scene\SceneOnUpdatePatch.cs" />
-    <Compile Include="Patches\SpirePatch.cs" />
-    <Compile Include="Patches\TFGame\TFGameInitializePatch.cs" />
+    <Compile Include="Patches\RoundLogicPatches.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ObjectRegistrar.cs" />
     <Compile Include="SpireController.cs" />
     <Compile Include="Settings\SpireSettings.cs" />
     <Compile Include="Settings\SpireVersion.cs" />
-    <Compile Include="ModMenu\SpireModsMenuMod.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Events\EventController.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Harmony\Harmony\Harmony.csproj">
-      <Project>{69aee16a-b6e7-4642-8081-3928b32455df}</Project>
+    <ProjectReference Include="..\Harmony\Harmony.csproj">
+      <Project>{9cd29f7e-435b-449f-9868-2a69dfdb7bd6}</Project>
       <Name>Harmony</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Patches\Level\" />
-    <Folder Include="Patches\Player\" />
-    <Folder Include="Patches\Screen\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

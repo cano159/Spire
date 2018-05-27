@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{064CFC9E-7C8E-4884-838A-C2187A2E9242}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OnlineMultiplayerMod</RootNamespace>
+    <AssemblyName>OnlineMultiplayerMod</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\SpireModLoader\bin\Debug\Mods\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <PlatformTarget>x86</PlatformTarget>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Delta, Version=1.0.6119.24285, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FossilDelta.0.1.0\lib\net35\Delta.dll</HintPath>
+    </Reference>
+    <Reference Include="LiteNetLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiteNetLib.0.7.7.1\lib\net35\LiteNetLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553" />
+    <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
+    <Reference Include="MsgPack, Version=0.9.0.0, Culture=neutral, PublicKeyToken=a2625990d5dc0167, processorArchitecture=MSIL">
+      <HintPath>..\packages\MsgPack.Cli.0.9.2\lib\net45\MsgPack.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX, Version=2.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Spire\bin\Debug\SharpDX.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="TowerFall">
+      <HintPath>..\SpireModLoader\bin\Debug\TowerFall.exe</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Patches\LevelEntityCheckSyncableCallerPatch.cs" />
+    <Compile Include="Model\EntityTypeWrappers.cs" />
+    <Compile Include="Model\OverrideBase.cs" />
+    <Compile Include="Model\State\ArcherDataState.cs" />
+    <Compile Include="Model\State\ArrowListState.cs" />
+    <Compile Include="Model\State\DarkWorldSessionState.cs" />
+    <Compile Include="Model\State\LevelSystemState.cs" />
+    <Compile Include="Model\State\MatchTeamsState.cs" />
+    <Compile Include="Model\State\PlayerPositionState.cs" />
+    <Compile Include="Model\State\TowerThemeState.cs" />
+    <Compile Include="Model\State\TreasureChestState.cs" />
+    <Compile Include="Model\State\TreasureSpawnerState.cs" />
+    <Compile Include="Model\SyncableEnemy.cs" />
+    <Compile Include="Model\SyncableEntity.cs" />
+    <Compile Include="Model\Delta.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="Model\State\LevelState.cs" />
+    <Compile Include="Model\State\MatchSettingsState.cs" />
+    <Compile Include="Model\State\RoundLogicState.cs" />
+    <Compile Include="Model\State\SessionState.cs" />
+    <Compile Include="Model\State\SessionStatsState.cs" />
+    <Compile Include="Model\State\EntityPositionState.cs" />
+    <Compile Include="Model\State\MovementPositionState.cs" />
+    <Compile Include="Model\SyncableActor.cs" />
+    <Compile Include="Model\SyncablePlayer.cs" />
+    <Compile Include="OnlineMultiplayerMod.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="DynamicMessagePackSerializer.cs" />
+    <Compile Include="Model\GameStateSnapshot.cs" />
+    <Compile Include="ThrottleCalculator.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="TypeWrapper.cs" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Harmony\Harmony.csproj">
+      <Project>{9CD29F7E-435B-449F-9868-2A69DFDB7BD6}</Project>
+      <Name>Harmony</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Spire\Spire.csproj">
+      <Project>{DCB8456E-B225-4851-B1C2-3A54804081D2}</Project>
+      <Name>Spire</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
