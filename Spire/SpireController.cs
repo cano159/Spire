@@ -54,7 +54,6 @@ namespace Spire
                 EventController.Instance.OnGameLoaded += Instance_OnGameLoaded;
 
                 ApplyHarmonyPatches();
-
                 LoadAndInitializeMods();
 
             }
@@ -95,6 +94,7 @@ namespace Spire
             }
 
             foreach (string currentFile in EnumerateModFiles())
+            {
                 try
                 {
                     Assembly assembly = Assembly.LoadFrom(currentFile);
@@ -116,6 +116,8 @@ namespace Spire
                 {
                     LogExceptionOnLoad(e);
                 }
+
+            }
         }
 
         private Mod TryLoadModFromAssembly(Type modType)
@@ -173,9 +175,13 @@ namespace Spire
 
         private static IEnumerable<string> EnumerateModFiles()
         {
-            return Directory.EnumerateFiles(Globals.SpireModsDirectory, "*.dll",
+            IEnumerable<string> dllsInModDirectory = Directory.EnumerateFiles(Globals.SpireModsDirectory, "*.dll",
                 SearchOption.AllDirectories);
+            
+            return from modFile in dllsInModDirectory 
+                let toLower = modFile.ToLower()
+                where !toLower.Contains("0harmony") && !toLower.Contains("towerfall") && !toLower.Contains("spire") 
+                select modFile;
         }
-
     }
 }
